@@ -17,8 +17,8 @@ JsonLoader::JsonLoader(const std::string &filePath) {
     if (std::ifstream file(filePath); !file.is_open()) {
         std::filesystem::path dir = std::filesystem::path(filePath).parent_path();
         if (!std::filesystem::exists(dir)) {
-
             std::filesystem::create_directories(dir);
+
             std::cerr << "Created directories: " << dir << std::endl;
         }
 
