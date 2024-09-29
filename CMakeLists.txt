@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.30)
-project(endstone_shuffle)
+project(stone_shuffle)
 
 set(CMAKE_CXX_STANDARD 17)
 
 set(ENDSTONE_SOURCES
-        src/endstone_shuffle.cpp
+        src/stone_shuffle.cpp
         src/json/json_loader.cpp
         src/include/json_loader.h
-        src/include/endstone_shuffle.h
+        src/include/stone_shuffle.h
 )
 
 include(FetchContent)
@@ -21,14 +21,7 @@ FetchContent_MakeAvailable(endstone)
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
 
-add_executable(endstone_shuffle_executable ${ENDSTONE_SOURCES})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -fPIC")
-    target_link_libraries(${target_name} PRIVATE -static-libgcc -static-libstdc++ libc++.a libc++abi.a)
-endif ()
-
-add_library(${PROJECT_NAME} SHARED ${ENDSTONE_SOURCES})
-target_include_directories(${PROJECT_NAME} PUBLIC include)
+endstone_add_plugin(${PROJECT_NAME} ${ENDSTONE_SOURCES})
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
-target_link_libraries(${PROJECT_NAME} PRIVATE endstone::headers)

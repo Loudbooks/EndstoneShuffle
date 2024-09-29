@@ -8,8 +8,10 @@
 
 class JsonLoader {
     std::vector<std::string> stringList;
+    int refreshInterval;
 
 public:
     explicit JsonLoader(const std::string& filePath);
     [[nodiscard]] const std::vector<std::string>& getStringList() const;
+    [[nodiscard]] int getRefreshInterval() const;
 };
