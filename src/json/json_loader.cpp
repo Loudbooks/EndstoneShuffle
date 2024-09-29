@@ -27,7 +27,6 @@ JsonLoader::JsonLoader(const std::string &filePath) {
         if (!outFile.is_open()) {
             std::cerr << "Error opening file: " << filePath << std::endl;
             std::cerr << "Reason: " << std::strerror(errno) << std::endl;
-            std::filesystem::create_directories(dir);
             return;
         }
 
