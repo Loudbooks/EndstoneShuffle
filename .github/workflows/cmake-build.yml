@@ -1,0 +1,36 @@
+name: Build with CMake and Clang on Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Clang
+      uses: martinforre/clang-clang++@v1
+      with:
+        clang-version: '18'
+
+    - name: Install CMake
+      uses: scikit-build/cmake-action@v2
+      with:
+        version: '3.30.4'
+
+    - name: Configure CMake
+      run: cmake -B build -G "Ninja" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+
+    - name: Build project
+      run: cmake .
+
+    - name: Make
+      run: make
