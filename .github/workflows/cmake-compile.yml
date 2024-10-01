@@ -5,16 +5,14 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-env:
-  BUILD_TYPE: Release
-
+    
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
+        build_type: [Release, RelWithDebInfo]
 
     steps:
     - uses: actions/checkout@v4
@@ -28,25 +26,40 @@ jobs:
       run: |
         export CC=clang
         export CXX=clang++
-        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
 
     - name: Configure CMake (Windows)
       if: matrix.os == 'windows-latest'
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      
+      run: |
+        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_CXX_FLAGS_RELWITHDEBINFO="/Z7" -DCMAKE_C_FLAGS_RELWITHDEBINFO="/Z7"
+          
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/build --config ${{matrix.build_type}}
 
-    - name: Upload Artifact (Windows)
-      if: matrix.os == 'windows-latest'
+    - name: Upload Artifact (Windows - Release)
+      if: matrix.os == 'windows-latest' && matrix.build_type == 'Release'
       uses: actions/upload-artifact@v4
       with:
-        name: disableme_windows
+        name: endstone_shuffle_windows
         path: ${{github.workspace}}/build/Release/endstone_stone_shuffle.dll
 
-    - name: Upload Artifact (Linux)
-      if: matrix.os == 'ubuntu-latest'
+    - name: Upload Artifact (Windows - Debug)
+      if: matrix.os == 'windows-latest' && matrix.build_type == 'RelWithDebInfo'
       uses: actions/upload-artifact@v4
       with:
-        name: disableme_linux
+        name: endstone_shuffle_windows_debug
+        path: ${{github.workspace}}/build/RelWithDebInfo/endstone_stone_shuffle.dll
+
+    - name: Upload Artifact (Linux - Release)
+      if: matrix.os == 'ubuntu-latest' && matrix.build_type == 'Release'
+      uses: actions/upload-artifact@v4
+      with:
+        name: endstone_shuffle_linux
+        path: ${{github.workspace}}/build/endstone_stone_shuffle.so
+
+    - name: Upload Artifact (Linux - Debug)
+      if: matrix.os == 'ubuntu-latest' && matrix.build_type == 'RelWithDebInfo'
+      uses: actions/upload-artifact@v4
+      with:
+        name: endstone_shuffle_linux_debug
         path: ${{github.workspace}}/build/endstone_stone_shuffle.so
