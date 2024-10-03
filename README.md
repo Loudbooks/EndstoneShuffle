@@ -1,6 +1,6 @@
 # Endstone Shuffle
 
-A plugin for [Endstone](https://endstone.dev) to automatically cycle through a set of MOTD messages.
+A plugin for <a href="https://endstone.dev/" target="_blank">Endstone</a> to automatically cycle through a set of MOTD messages. to automatically cycle through a set of MOTD messages.
 
 
 ## Setup
