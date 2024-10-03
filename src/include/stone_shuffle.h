@@ -16,7 +16,6 @@ public:
     StoneShuffle() : loader(JsonLoader(std::filesystem::current_path().string() + "/StoneShuffle/config.json")), currentIndex(0), lastShuffled(0) {}
 
     void onEnable() override {
-        getLogger().info(std::filesystem::current_path().string());
         registerEvent(&StoneShuffle::onServerListPingEvent, *this);
     }
 
