@@ -18,11 +18,11 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Install Clang (Linux)
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-22.04'
       run: sudo apt-get update && sudo apt-get install -y clang
 
     - name: Configure CMake (Linux)
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-22.04'
       run: |
         export CC=clang
         export CXX=clang++
@@ -51,14 +51,14 @@ jobs:
         path: ${{github.workspace}}/build/RelWithDebInfo/stone_shuffle_windows_debug.dll
 
     - name: Upload Artifact (Linux - Release)
-      if: matrix.os == 'ubuntu-latest' && matrix.build_type == 'Release'
+      if: matrix.os == 'ubuntu-22.04' && matrix.build_type == 'Release'
       uses: actions/upload-artifact@v4
       with:
         name: endstone_shuffle_linux
         path: ${{github.workspace}}/build/stone_shuffle_linux.so
 
     - name: Upload Artifact (Linux - Debug)
-      if: matrix.os == 'ubuntu-latest' && matrix.build_type == 'RelWithDebInfo'
+      if: matrix.os == 'ubuntu-22.04' && matrix.build_type == 'RelWithDebInfo'
       uses: actions/upload-artifact@v4
       with:
         name: endstone_shuffle_linux_debug
